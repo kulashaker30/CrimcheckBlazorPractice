@@ -1,0 +1,34 @@
+@page "/People"
+
+<div class="container">
+  <div class="row">
+    <div class="col header">
+      Id
+    </div>
+    <div class="col header">
+      Fullname
+    </div>
+    <div class="col header">
+      Date Of Birth
+    </div>
+    <div class="col header">
+      Address
+    </div>
+  </div>
+  @foreach(var person in People) {
+    <div class="row">
+      <div class="col">
+        <a href="#" @onclick="@(e => GoToEditPage(person.Id))">@person.Id</a>
+      </div>
+      <div class="col">
+        @person.Fullname
+      </div>
+      <div class="col">
+        @person.DOB.ToString("yyyy-MM-dd")
+      </div>
+      <div class="col">
+        @person.Address @person.City @person.ZipCode
+      </div>
+    </div>
+  }
+</div>

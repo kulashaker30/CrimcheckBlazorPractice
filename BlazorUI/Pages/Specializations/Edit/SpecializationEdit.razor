@@ -1,0 +1,37 @@
+@page "/Specializations/{Id:int}/Edit"
+<div class="row">
+    <div class="col-sm-6">
+        <h2>Edit Specialization</h2>
+        <EditForm EditContext="editContext" OnSubmit="Submit">
+            
+            <DataAnnotationsValidator />
+
+            <div class="form-group">
+                <label for="id">Specialization Id: @Id</label>
+            </div>
+
+            <div class="form-group">
+                <label for="name">Name</label>
+                <InputText id="name" @bind-Value="specializationEditDto.Name" class="form-control"></InputText>
+                <ValidationMessage For="@(() => specializationEditDto.Name)"></ValidationMessage>    
+            </div>
+
+            <div class="form-group">
+                <label for="desc">Last Name</label>
+                <InputTextArea id="desc" @bind-Value="specializationEditDto.Description" class="form-control"></InputTextArea>
+                <ValidationMessage For="@(() => specializationEditDto.Description)"></ValidationMessage>    
+            </div>
+
+
+            <div class="row">
+                <div class="col text-left">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+            
+            
+            <br />
+            
+        </EditForm>
+    </div>
+</div>

@@ -1,0 +1,32 @@
+@page "/Specializations/Create"
+<div class="row">
+    <div class="col-sm-6">
+        <h2>New Specialization</h2>
+        <EditForm Model="specializationCreateDto" OnValidSubmit="SubmitForm">
+            
+            <DataAnnotationsValidator />
+
+            <div class="form-group">
+                <label for="name">Name</label>
+                <InputText id="name" @bind-Value="specializationCreateDto.Name" class="form-control"></InputText>
+                <ValidationMessage For="@(() => specializationCreateDto.Name)"></ValidationMessage>    
+            </div>
+
+            <div class="form-group">
+                <label for="desc">Description</label>
+                <InputTextArea id="desc" @bind-Value="specializationCreateDto.Description" class="form-control"></InputTextArea>
+                <ValidationMessage For="@(() => specializationCreateDto.Description)"></ValidationMessage>    
+            </div>
+
+
+            <div class="row">
+                <div class="col text-left">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+            
+            <br />
+            
+        </EditForm>
+    </div>
+</div>

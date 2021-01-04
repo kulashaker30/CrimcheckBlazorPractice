@@ -1,0 +1,49 @@
+<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+    <h5 class="my-0 mr-md-auto font-weight-normal">Online Clinic</h5>
+    <nav class="my-2 my-md-0 mr-md-3">
+    @if(Role == "Administrator")
+    {
+        <a class="p-2 text-dark text-sm" href="dashboard"> Dashboard</a>
+        <a class="p-2 text-dark text-sm" href="doctors/create"> New Doctor</a>
+        <a class="p-2 text-dark text-sm" href="doctors"> Doctor List</a>
+        <a class="p-2 text-dark text-sm" href="people/create"> New Person</a>
+        <a class="p-2 text-dark text-sm" href="people"> Person List</a>
+        <a class="p-2 text-dark text-sm" href="specializations/create"> New Specialization</a>
+        <a class="p-2 text-dark text-sm" href="specializations"> Specialization List</a>
+    }
+    else
+    {
+        <a class="p-2 text-dark text-sm" href="doctors/create"> Dashboard</a>
+        <a class="p-2 text-dark text-sm" href="consultations"> Consultations</a>
+    }
+    </nav>
+    <a class="btn btn-outline-primary" @onclick="Logout">Logout @Username</a>
+</div>
+
+@code 
+{
+    [Inject]
+    protected NavigationManager NavigationManager { get; set; }
+    
+    [CascadingParameter(Name = "Role")]
+    public string Role { get; set; }
+
+    [CascadingParameter(Name = "Username")]
+    public string Username { get; set; }
+
+    [CascadingParameter(Name = "IsAuthenticated")]
+    public bool IsAuthenticated { get; set; }
+
+    [Parameter]
+    public bool Authenticated { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> AuthenticatedChanged { get; set; }
+
+    private void Logout()
+    {
+        Authenticated = false;
+        AuthenticatedChanged.InvokeAsync(Authenticated);
+        NavigationManager.NavigateTo("login");
+    }
+}

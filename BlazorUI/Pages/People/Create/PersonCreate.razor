@@ -1,0 +1,62 @@
+@page "/People/Create"
+<div class="row">
+    <div class="col-sm-6">
+        <h2>New Person</h2>
+        <EditForm EditContext="editContext" OnSubmit="SubmitForm">
+            
+            <DataAnnotationsValidator />
+
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <InputText id="firstName" @bind-Value="createDto.FirstName" class="form-control"></InputText>
+                <ValidationMessage For="@(() => createDto.FirstName)"></ValidationMessage>    
+            </div>
+
+            <div class="form-group">
+                <label for="middleName">Middle Name</label>
+                <InputText id="middleName" @bind-Value="createDto.MiddleName" class="form-control"></InputText>
+                <ValidationMessage For="@(() => createDto.MiddleName)"></ValidationMessage>    
+            </div>
+
+            <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <InputText id="lastName" @bind-Value="createDto.LastName" class="form-control"></InputText>
+                <ValidationMessage For="@(() => createDto.FirstName)"></ValidationMessage>    
+            </div>
+
+            <div class="form-group">
+                <label for="dob">Date Of Birth</label>
+                <InputText id="dob" @bind-Value="createDto.DOBString" class="form-control"></InputText>
+                <ValidationMessage For="@(() => createDto.DOBString)"></ValidationMessage>    
+            </div>
+
+            <div class="form-group">
+                <label for="address">Address</label>
+                <InputText id="address" @bind-Value="createDto.Address" class="form-control"></InputText>
+                <ValidationMessage For="@(() => createDto.Address)"></ValidationMessage>    
+            </div>
+
+            <div class="form-group">
+                <label for="city">City</label>
+                <InputText id="city" @bind-Value="createDto.City" class="form-control"></InputText>
+                <ValidationMessage For="@(() => createDto.City)"></ValidationMessage>    
+            </div>
+
+            <div class="form-group">
+                <label for="zip">Zip</label>
+                <InputText id="zip" @bind-Value="createDto.ZipCode" class="form-control"></InputText>
+                <ValidationMessage For="@(() => createDto.ZipCode)"></ValidationMessage>    
+            </div>
+
+
+            <div class="row">
+                <div class="col text-left">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+            
+            <br />
+            
+        </EditForm>
+    </div>
+</div>

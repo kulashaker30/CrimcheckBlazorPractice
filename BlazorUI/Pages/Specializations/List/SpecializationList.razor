@@ -1,0 +1,32 @@
+@page "/Specializations"
+@using OnlineClinic.Core.Services
+
+@inject NavigationManager NavigationManager
+@inject ISpecializationService SpecializationService
+
+<div class="container">
+  <div class="row">
+    <div class="col header">
+      Id
+    </div>
+    <div class="col header">
+      Name
+    </div>
+    <div class="col header">
+      Description
+    </div>
+  </div>
+  @foreach(var s in Specializations) {
+    <div class="row">
+      <div class="col">
+        @s.Id
+      </div>
+      <div class="col">
+        @s.Name
+      </div>
+      <div class="col">
+        @s.Description
+      </div>
+    </div>
+  }
+</div>
