@@ -1,3 +1,4 @@
+@using System.Security.Claims
 <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
     <h5 class="my-0 mr-md-auto font-weight-normal">Online Clinic</h5>
     <nav class="my-2 my-md-0 mr-md-3">
@@ -25,25 +26,28 @@
     [Inject]
     protected NavigationManager NavigationManager { get; set; }
     
-    [CascadingParameter(Name = "Role")]
-    public string Role { get; set; }
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationStateTask { get; set; }
 
-    [CascadingParameter(Name = "Username")]
+    [Inject]
+    protected AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+
     public string Username { get; set; }
 
-    [CascadingParameter(Name = "IsAuthenticated")]
-    public bool IsAuthenticated { get; set; }
-
-    [Parameter]
-    public bool Authenticated { get; set; }
-
-    [Parameter]
-    public EventCallback<bool> AuthenticatedChanged { get; set; }
+    public string Role { get; set; }
 
     private void Logout()
     {
-        Authenticated = false;
-        AuthenticatedChanged.InvokeAsync(Authenticated);
+        ((CustomAuthStateProvider)AuthenticationStateProvider).Logout();
         NavigationManager.NavigateTo("login");
+    }
+
+    protected override void OnParametersSet()
+    {
+        if(AuthenticationStateTask.Result.User.Identity != null)
+        {
+            Username = ((ClaimsIdentity)AuthenticationStateTask.Result.User.Identity).NameClaimType;
+            Role = ((ClaimsIdentity)AuthenticationStateTask.Result.User.Identity).RoleClaimType;
+        }
     }
 }

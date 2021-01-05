@@ -18,6 +18,7 @@ using AutoMapper;
 using OnlineClinic.Core.Mappings;
 using Microsoft.AspNetCore.Components.Authorization;
 using OnlineClinic.Core.Utilities;
+using Microsoft.AspNetCore.Components.Server;
 
 namespace BlazorUI
 {
@@ -62,10 +63,12 @@ namespace BlazorUI
                 return new PasswordEncryptionUtil(passwordSecurityKey);
             });
             
-            services.AddScoped<CustomAuthStateProvider>(); // AuthenticationStateProvider
+            services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+
 
             services.AddAuthentication();
             services.AddAuthorization();
+            services.AddHttpContextAccessor();
             
         }
 

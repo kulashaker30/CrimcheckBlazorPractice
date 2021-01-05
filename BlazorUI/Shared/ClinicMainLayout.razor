@@ -2,57 +2,26 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @using BlazorUI.Pages.Authentication
 
-@if(IsAuthenticated)
+@if(AuthenticationStateTask.Result.User.Identity != null && AuthenticationStateTask.Result.User.Identity.IsAuthenticated)
 {
-    <CascadingValue Value="@IsAuthenticated" Name="IsAuthenticated">
-        <CascadingValue Value="@Username" Name="Username">
-            <CascadingValue Value="@Role" Name="Role">
-                <div class="container-fluid">
-                    <ClinicNavMenu @bind-Authenticated="IsAuthenticated"/>
-                    <div class="row">
-                        <div class="col" style="margin-left: 20px;">
-                            
-                            @if(IsAuthenticated)
-                            {
-                                @Body
-                            }
-                            
-                        </div>
-                    </div>
+    <AuthorizeView>
+        <div class="container-fluid">
+            <ClinicNavMenu/>
+            <div class="row">
+                <div class="col" style="margin-left: 20px;">
+                    @Body
                 </div>
-            </CascadingValue>
-        </CascadingValue>
-    </CascadingValue>
+            </div>
+        </div>
+    </AuthorizeView>
 }
 else
 {
-    <LoginPage @bind-AuthState="AuthState" ></LoginPage>
+    <LoginPage></LoginPage>
 }
+
 @code 
 {
-    private Task<AuthenticationState> _authState;
-
     [CascadingParameter]
-    public Task<AuthenticationState> AuthState 
-    { 
-        get => _authState;
-        set 
-        {
-            if(!IsAuthenticated && value.Result.User.Identity.IsAuthenticated)
-            {
-                IsAuthenticated = true;
-                Role = value.Result.User.Claims.FirstOrDefault(c => c.Type == "Role").Value;
-                Username = value.Result.User.Claims.FirstOrDefault(c => c.Type == "Username").Value;
-            }
-            if(value == _authState) return;
-            _authState = value;
-        }
-    }
-
-    private bool IsAuthenticated;
-
-    private string Role;
-
-    private string Username;
-
-}  
+    public Task<AuthenticationState> AuthenticationStateTask { get; set; }
+}

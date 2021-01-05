@@ -10,14 +10,11 @@ namespace BlazorUI.Pages.Authentication
 {
     public partial class LoginPage: ComponentBase
     {
-        [Parameter]
-        public Task<AuthenticationState> AuthState { get; set; }
-
-        [Parameter]
-        public EventCallback<Task<AuthenticationState>> AuthStateChanged { get; set; }
+        [CascadingParameter]
+        private Task<AuthenticationState> AuthenticationStateTask { get; set; }
 
         [Inject]
-        protected CustomAuthStateProvider AuthenticationStateProvider { get; set; }
+        protected AuthenticationStateProvider AuthenticationStateProvider { get; set; }
 
         [Inject]
         protected NavigationManager NavigationManager { get; set; }
@@ -45,8 +42,6 @@ namespace BlazorUI.Pages.Authentication
                 isValid = ((CustomAuthStateProvider)AuthenticationStateProvider).Authenticate(loginDto.Username, loginDto.Password, loginDto.IsAdmin);
                 if(isValid)
                 {
-                    AuthState = ((AuthenticationStateProvider)AuthenticationStateProvider).GetAuthenticationStateAsync();
-                    AuthStateChanged.InvokeAsync(AuthState);
                     NavigationManager.NavigateTo(loginDto.IsAdmin? "doctors" : "consultations");
                 }
             }

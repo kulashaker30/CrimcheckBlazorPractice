@@ -2,13 +2,12 @@ using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Server;
 using OnlineClinic.Core.Services;
 
-public class CustomAuthStateProvider : AuthenticationStateProvider, IHostEnvironmentAuthenticationStateProvider
+public class CustomAuthStateProvider : ServerAuthenticationStateProvider, IHostEnvironmentAuthenticationStateProvider
 {
     private readonly IUserService _userService;
-
-    private AuthenticationState _authenticationState;
 
     public CustomAuthStateProvider(IUserService userService)
     {
@@ -28,17 +27,20 @@ public class CustomAuthStateProvider : AuthenticationStateProvider, IHostEnviron
                 new Claim(ClaimTypes.NameIdentifier, AdminUser? "Administrator" : username)
             }, "Web", username,  AdminUser? "Administrator" : "Doctor");            
 
-            _authenticationState = new AuthenticationState(new ClaimsPrincipal(identity));
+            var authenticationState = new AuthenticationState(new ClaimsPrincipal(identity));
+            SetAuthenticationState(Task.FromResult<AuthenticationState>(authenticationState));
+            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
             return true;
         }
         return false;
     }
 
-    public override Task<AuthenticationState> GetAuthenticationStateAsync() => Task.FromResult<AuthenticationState>(_authenticationState);
-
-    public void SetAuthenticationState(Task<AuthenticationState> authenticationStateTask)
+    public void Logout()
     {
-        authenticationStateTask = authenticationStateTask ?? throw new ArgumentNullException(nameof(authenticationStateTask));
-        NotifyAuthenticationStateChanged(authenticationStateTask);
+      var authenticationState = new AuthenticationState(new ClaimsPrincipal());
+      SetAuthenticationState(Task.FromResult<AuthenticationState>(authenticationState));
+      NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
     }
+
+    
 }
